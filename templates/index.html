@@ -1,1 +1,29 @@
 
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App with CSS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to My Dockerized Multi-stage Flask App!</h1>
+    <p>This Flask web application is automatically built, tested, and deployed using Jenkins CI/CD pipeline.</p>
+    <p>It includes:</p>
+    <ul>
+        <li>Automated cloning of the GitHub repository</li>
+        <li>Code analysis with SonarQube for quality and security checks</li>
+        <li>Validation against SonarQube quality gates</li>
+        <li>Management of Docker containers with Docker Compose</li>
+        <li>Security scanning of Docker images using Trivy</li>
+        <li>Dependency checks for security vulnerabilities with OWASP Dependency Check</li>
+        <li>Deployment of Docker images to Docker Hub</li>
+    </ul>
+    <p>Developed by <b>M. Naimat Ullah</b>.</p>
+    </div>
+</body>
+</html>
