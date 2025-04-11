@@ -1,0 +1,28 @@
+version: 0.2
+
+phases: 
+  pre_build:
+    commands:
+      # Retrieve Docker Hub credentials from AWS Parameter Store
+      - echo "Fetching Docker Hub credentials from SSM Parameter Store..."
+      - export DOCKERHUB_USERNAME=$(aws ssm get-parameter --name /myapp/docker-credentials/username --with-decryption --query Parameter.Value --output text)
+      - export DOCKERHUB_PASSWORD=$(aws ssm get-parameter --name /myapp/docker-credentials/password --with-decryption --query Parameter.Value --output text)
+ 
+      # Login to Docker Hub
+      - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
+  build:
+    commands:
+      # Build the Docker image
+      - echo "Building Docker image..."
+      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 133707302068.dkr.ecr.us-west-2.amazonaws.com
+      - docker build -t flask-app .
+      - docker tag flask-app:latest 133707302068.dkr.ecr.us-west-2.amazonaws.com/flask-app:latest
+      - docker push 133707302068.dkr.ecr.us-west-2.amazonaws.com/flask-app:latest
+
+  post_build:
+    commands:
+      - echo "Build completed successfully!"
+artifacts:
+  files:
+    - '**/*'
+  base-directory: ../simple-python-app
